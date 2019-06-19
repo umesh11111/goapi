@@ -1,0 +1,55 @@
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"math/rand"
+	"net/http"
+)
+
+func getrequest() {
+	resp, err := http.Get("https://reqres.in/api/users/2")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(string(body))
+}
+
+func postrequest() {
+
+	message := map[string]interface{}{
+		"users": "Raquel Paul",
+		"id":    rand.Intn(100),
+	}
+
+	bytesRepresentation, err := json.Marshal(message)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	resp, err := http.Post("https://reqres.in/api/users", "application/json", bytes.NewBuffer(bytesRepresentation))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var result map[string]interface{}
+
+	json.NewDecoder(resp.Body).Decode(&result)
+
+	log.Println(result)
+	//log.Println(result["data"])
+}
+
+func main() {
+	getrequest()
+	postrequest()
+
+}
