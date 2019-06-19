@@ -17,7 +17,7 @@ func main() {
 		data, _ := ioutil.ReadAll(response.Body)
 		fmt.Println(string(data))
 	}
-	jsonData := map[string]string{"users": "Romanrange"}
+	jsonData := map[string]string{"users": "Romanrange","jobs":"leader"}
 	jsonValue, _ := json.Marshal(jsonData)
 	response, err = http.Post("https://reqres.in/api/users/", "application/json", bytes.NewBuffer(jsonValue))
 	if err != nil {
