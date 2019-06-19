@@ -20,7 +20,7 @@ func getrequest() {
 		log.Fatalln(err)
 	}
 
-	log.Println(string(body))
+	log.Println("Requested Data\n",string(body))
 }
 
 func postrequest() {
@@ -44,7 +44,7 @@ func postrequest() {
 
 	json.NewDecoder(resp.Body).Decode(&result)
 
-	log.Println(result)
+	log.Println("Posted Data\n",result)
 	//log.Println(result["data"])
 }
 
