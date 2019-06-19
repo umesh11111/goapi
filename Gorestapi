@@ -3,53 +3,28 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
-	"math/rand"
 	"net/http"
 )
 
-func getrequest() {
-	resp, err := http.Get("https://reqres.in/api/users/2")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println("Requested Data\n",string(body))
-}
-
-func postrequest() {
-
-	message := map[string]interface{}{
-		"users": "Raquel Paul",
-		"id":    rand.Intn(100),
-	}
-
-	bytesRepresentation, err := json.Marshal(message)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	resp, err := http.Post("https://reqres.in/api/users", "application/json", bytes.NewBuffer(bytesRepresentation))
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	var result map[string]interface{}
-
-	json.NewDecoder(resp.Body).Decode(&result)
-
-	log.Println("Posted Data\n",result)
-	//log.Println(result["data"])
-}
-
 func main() {
-	getrequest()
-	postrequest()
-
+	fmt.Println("Starting the application...")
+	response, err := http.Get("https://reqres.in/api/users/2")
+	if err != nil {
+		fmt.Printf("The HTTP request failed with error %s\n", err)
+	} else {
+		data, _ := ioutil.ReadAll(response.Body)
+		fmt.Println(string(data))
+	}
+	jsonData := map[string]string{"users": "Romanrange"}
+	jsonValue, _ := json.Marshal(jsonData)
+	response, err = http.Post("https://reqres.in/api/users/", "application/json", bytes.NewBuffer(jsonValue))
+	if err != nil {
+		fmt.Printf("The HTTP request failed with error %s\n", err)
+	} else {
+		data, _ := ioutil.ReadAll(response.Body)
+		fmt.Println(string(data))
+	}
+	fmt.Println("Terminating the application...")
 }
